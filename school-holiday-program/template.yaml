@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  school-holiday-program
+
+  Pulls school holiday program page and looks for changes, notifies me via Pushover if it finds any
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 10
+
+Resources:
+  SchoolHolidayNotification:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: school_holiday_notification/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Tags:
+        Project: "school-holiday-notification"
+      Layers:
+        - arn:aws:lambda:ap-southeast-2:036372598227:layer:acn-report-dependencies:1
+        - arn:aws:lambda:ap-southeast-2:770693421928:layer:Klayers-python38-requests:27
+        - arn:aws:lambda:ap-southeast-2:770693421928:layer:Klayers-python38-lxml:9
+      Policies:
+        - Statement:
+            - Sid: SchoolHolidayNotificationReadSSM
+              Effect: Allow
+              Action:
+                - ssm:GetParameter
+                - ssm:PutParameter
+              Resource: arn:aws:ssm:ap-southeast-2:036372598227:parameter/*
+      Architectures:
+        - x86_64
+      Events:
+        EC2ScheduleStart:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 21 ? * * *)

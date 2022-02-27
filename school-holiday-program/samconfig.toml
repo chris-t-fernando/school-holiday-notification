@@ -1,0 +1,9 @@
+version=0.1
+
+[default.global.parameters]
+stack_name = "school-holiday-notification"
+region = "ap-southeast-2"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-3cvyxv5y3awt"
+s3_prefix = "school-holiday-notification"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
