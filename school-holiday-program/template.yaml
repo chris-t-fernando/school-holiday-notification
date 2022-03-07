@@ -37,4 +37,4 @@ Resources:
         EC2ScheduleStart:
           Type: Schedule
           Properties:
-            Schedule: cron(0 21 ? * * *)
+            Schedule: cron(11 * ? * * *)
