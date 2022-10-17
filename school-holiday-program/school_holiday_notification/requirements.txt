@@ -1,1 +1,4 @@
-#requests
+boto3
+lxml
+git+https://github.com/chris-t-fernando/notification-service.git
+git+https://github.com/chris-t-fernando/parameter-store.git

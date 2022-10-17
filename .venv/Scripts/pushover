@@ -1,0 +1,35 @@
+#!C:\Users\chris.fernando\projects\school-holiday-notification\.venv\Scripts\python.exe
+
+"""
+Usage:    pushover <message> --token=<TOKEN> --user=<USER> [options]
+
+Options:
+-h, --help            show this help message and exit
+--token=<TOKEN>         Pushover app token (overrides environment
+                      PUSHOVER_TOKEN)
+--user=<USER>           Pushover user key
+
+Optional:
+--device DEVICE       Pushover device name
+--title TITLE         Message title
+--timestamp TIMESTAMP Optional UNIX timestamp
+--priority PRIORITY   Optional priority setting (0=normal, 1=high)
+"""
+
+import docopt
+import pushover
+
+if __name__ == '__main__':
+    arguments = docopt.docopt(__doc__)
+
+    print(arguments)
+
+    po = pushover.Pushover(arguments['--token'])
+    po.user(arguments['--user'], arguments['--device'])
+    msgid, msg = po.msg(arguments['<message>'])
+
+    msg.set('title', arguments['--title'])
+    msg.set('timestamp', arguments['--timestamp'])
+    msg.set('priority', arguments['--priority'])
+
+    po.send(msgid)
